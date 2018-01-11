@@ -1,8 +1,15 @@
-
 var exports = module.exports = {};
+var mongoose = require('mongoose');
+
+// mongoose.connect('mongodb://localhost/WCM');
+// var db = mongoose.connection;
+
+// db.once('open', function () {
+//     console.log('Connected to DB');
+// })
 
 exports.insert = function (dbName, data) {
-    var mongoose = require('mongoose');
+    console.log('insert')
     mongoose.connect('mongodb://localhost/WCM');
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
@@ -17,22 +24,39 @@ exports.insert = function (dbName, data) {
                 console.log(datas);
             })
         })
+        db.close();
     })
 }
 
 exports.queryAll = function (dbName, callback) {
-    var mongoose = require('mongoose');
-    mongoose.connect('mongodb://localhost/WCM');
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'))
+    // var mongoose = require('mongoose');
+    // mongoose.connect('mongodb://localhost/WCM');
+    // var db = mongoose.connection;
+    // db.on('error', console.error.bind(console, 'connection error:'))
 }
 
 exports.findOne = function (dbName, userInfo, callback) {
-    var mongoose = require('mongoose');
+    console.log('findone');
     mongoose.connect('mongodb://localhost/WCM');
     var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'))
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function () {
+        console.log('Connected to DB');
+        var User = require ('')(db);
+        User.find(userInfo, function(err, datas){
+            if (err) return console.log(err);
+            if (datas.length > 0){
+                db.close();
+                callback(true);
+            }
+            else {
+                db.close();
+                callback(false);
+            }
+        })
+        // db.close();
+    })
+    // callback(false);
 }
-
 
 return module.exports;
