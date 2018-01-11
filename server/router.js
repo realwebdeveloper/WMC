@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const security = require('./security')
 const app = express()
-const staticPath = '../ClientMDB/dist';
+const staticPath = '../dist';
 const api = require('./apiRouter');
 
 app.get(/^\/[a-z]*$/, (req, res) => {
